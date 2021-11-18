@@ -105,7 +105,8 @@ export default {
           }
         })).data.users
       } catch(err) {
-        window.location.reload();
+        console.log(err)
+        //window.location.reload();
       }
       this.users = users
     },

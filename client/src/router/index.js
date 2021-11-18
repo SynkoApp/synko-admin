@@ -4,7 +4,9 @@ import VueRouter from "vue-router";
 import Auth from "../middleware/auth";
 
 import Home from "../views/Home.vue";
-import Login from '../views/Login.vue'
+import Login from "../views/Login.vue";
+import Links from "../views/Links.vue";
+
 
 Vue.use(VueRouter);
 
@@ -13,6 +15,14 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      middleware: Auth
+    }
+  },
+  {
+    path: "/links",
+    name: "Links",
+    component: Links,
     meta: {
       middleware: Auth
     }
