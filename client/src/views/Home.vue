@@ -53,6 +53,7 @@ import axios from 'axios'
 import LeftBar from '../components/LeftBar.vue';
 import NewUser from '../components/NewUser.vue'
 import EditUser from '../components/EditUser.vue';
+import { API_URL } from '../config';
 
 export default {
   data () {
@@ -99,7 +100,7 @@ export default {
       try {
         users = (await axios({
           method : 'get',
-          url : 'http://localhost:4060/admin/users',
+          url : API_URL+'/admin/users',
           headers : {
             Authorization : localStorage.getItem('token')
           }
@@ -113,7 +114,7 @@ export default {
     async deleteUser(user) {
       let req = (await axios({
         method: "delete",
-        url : `http://localhost:4060/admin/users/${user.ID}`,
+        url : `${API_URL}/admin/users/${user.ID}`,
         headers : {
           Authorization : localStorage.getItem('token')
         }
