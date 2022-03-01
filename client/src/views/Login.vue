@@ -31,6 +31,7 @@
 import { required } from 'vee-validate/dist/rules'
 import axios from 'axios'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+import { API_URL } from '../config';
 
 setInteractionMode('eager')
 
@@ -56,7 +57,7 @@ export default {
       this.loading = true;
       axios({
         method : "post",
-        url : "http://localhost:4060/admin/login",
+        url : API_URL+"/admin/login",
         data : {
           username : this.name,
           password : this.password

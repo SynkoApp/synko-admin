@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from "../config";
 
 export default function auth({ next, router }) {
     if(!localStorage.getItem('token')) {
@@ -6,7 +7,7 @@ export default function auth({ next, router }) {
     } else {
         axios({
             method: "post",
-            url: "http://localhost:4060/admin/checkToken",
+            url: API_URL+"/admin/checkToken",
             headers: {
               Authorization: localStorage.getItem('token')
             }

@@ -57,6 +57,7 @@ import axios from 'axios'
 import LeftBar from '../components/LeftBar.vue';
 import NewLink from '../components/NewLink.vue';
 import EditLink from '../components/EditLink.vue';
+import { API_URL } from '../config';
 
 export default {
     data () {
@@ -104,7 +105,7 @@ export default {
             try {
                 links = (await axios({
                     method : 'get',
-                    url : 'http://localhost:4060/admin/links',
+                    url : API_URL+'/admin/links',
                     headers : {
                         Authorization : localStorage.getItem('token')
                     }
@@ -118,7 +119,7 @@ export default {
         async deleteLink(link) {
             let req = (await axios({
                 method: "delete",
-                url : `http://localhost:4060/admin/links`,
+                url : `${API_URL}/admin/links`,
                 headers : {
                     Authorization : localStorage.getItem('token')
                 },
