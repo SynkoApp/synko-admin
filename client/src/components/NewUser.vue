@@ -37,6 +37,8 @@
 
 <script>
 import axios from 'axios';
+import { API_URL } from '../config';
+
 export default {
     props: ["open"],
     data() {
@@ -68,7 +70,7 @@ export default {
             if(!this.newUser.username || !this.newUser.email || !this.newUser.password) return;
             this.loading = true;
             axios({
-                url: "http://localhost:4060/admin/createUser",
+                url: API_URL + "/admin/createUser",
                 method: "post",
                 headers: {
                     Authorization: localStorage.getItem('token')

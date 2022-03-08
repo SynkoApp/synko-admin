@@ -44,6 +44,8 @@
 
 <script>
 import axios from 'axios';
+import { API_URL } from '../config';
+
 export default {
     props: ["open"],
     data() {
@@ -65,7 +67,7 @@ export default {
             if(!this.newLink.domain || !this.newLink.desc || !this.newLink.why) return;
             this.loading = true;
             axios({
-                url: "http://localhost:4060/admin/links",
+                url: API_URL + "/admin/links",
                 method: "post",
                 headers: {
                     Authorization: localStorage.getItem('token')

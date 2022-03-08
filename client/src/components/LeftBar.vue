@@ -40,6 +40,8 @@
 
 <script>
 import axios from 'axios';
+import { API_URL } from '../config';
+
 export default {
     data() {
         return {
@@ -49,7 +51,7 @@ export default {
     async created() {
         let req = (await axios({
             method: "get",
-            url: "http://localhost:4060/users/@me",
+            url: API_URL + "/users/@me",
             headers: {
               Authorization: `${localStorage.getItem('token')}`
             }

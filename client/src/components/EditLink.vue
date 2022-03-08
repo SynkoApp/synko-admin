@@ -51,6 +51,8 @@
 
 <script>
 import axios from 'axios';
+import { API_URL } from '../config';
+
 export default {
     props: ["open", "link"],
     watch: {
@@ -82,7 +84,7 @@ export default {
             })));
             this.loading = true;
             axios({
-                url: `http://localhost:4060/admin/links`,
+                url: `${API_URL}/admin/links`,
                 method: "patch",
                 headers: {
                     Authorization: localStorage.getItem('token')

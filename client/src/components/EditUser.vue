@@ -42,6 +42,8 @@
 
 <script>
 import axios from 'axios';
+import { API_URL } from '../config';
+
 export default {
     props: ["open", "user"],
     watch: {
@@ -82,7 +84,7 @@ export default {
             })));
             this.loading = true;
             axios({
-                url: `http://localhost:4060/admin/edit/${this.user.ID}`,
+                url: API_URL + `/admin/edit/${this.user.ID}`,
                 method: "patch",
                 headers: {
                     Authorization: localStorage.getItem('token')
