@@ -7,23 +7,26 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                    <v-col cols="11">
-                        <v-text-field label="ID" required v-model="localUser.ID" disabled></v-text-field>
-                    </v-col>
-                    <v-col cols="1">
-                        <v-btn fab small class="mt-3" @click="copy(localUser.ID)">
-                        <v-icon small>mdi-content-copy</v-icon>
-                        </v-btn>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="Username" v-model="localUser.name" required></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field label="Email" v-model="localUser.mail" required></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select v-model="localUser.perms" label="Permissions" :items="permissions" item-text="name" item-value="value" required></v-select>
-                    </v-col>
+                        <v-col cols="11">
+                            <v-text-field label="ID" required v-model="localUser.ID" disabled></v-text-field>
+                        </v-col>
+                        <v-col cols="1">
+                            <v-btn fab small class="mt-3" @click="copy(localUser.ID)">
+                            <v-icon small>mdi-content-copy</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field label="Username" v-model="localUser.name" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field label="Email" v-model="localUser.mail" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select v-model="localUser.perms" label="Permissions" :items="permissions" item-text="name" item-value="value" required></v-select>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-select v-model="localUser.badges" :items="badgesList" label="Badges" multiple chips deletable-chips item-text="name" item-value="value"></v-select>
+                        </v-col>
                     </v-row>
                 </v-container>
             </v-card-text>
@@ -64,6 +67,16 @@ export default {
                     value: 0
                 }
             ],
+            badgesList: [
+                {
+                    name: "Bug Hunter",
+                    value: "bughunter"
+                },
+                {
+                    name: "Big Bug Hunter",
+                    value: "bigbughunter"
+                }
+            ],
             loading: false
         }
     },
@@ -80,7 +93,8 @@ export default {
             let user = JSON.parse(JSON.stringify(Object.assign({}, {
                 username: edited.name,
                 email: edited.mail,
-                permissions: edited.perms
+                permissions: edited.perms,
+                badges: [...edited.badges]
             })));
             this.loading = true;
             axios({

@@ -70,6 +70,7 @@ export default {
         { text: 'Groups', value: 'groups' },
         { text: 'E-mail', value: 'mail' },
         { text: 'Permissions', value: 'perms' },
+        { text: 'Badges', value: 'badges' },
         { text: 'Actions', value : 'actions' }
       ],
       permissions: [

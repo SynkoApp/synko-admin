@@ -1,6 +1,6 @@
 {
   "name": "synko-admin",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -45,5 +45,13 @@
     "vue-cli-plugin-vuetify": "~2.4.2",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
+  },
+  "build": {
+    "protocols": [
+      {
+        "name": "Synko Admin",
+        "schemes": ["synko-admin"]
+      }
+    ]
   }
 }
