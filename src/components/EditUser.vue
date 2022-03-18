@@ -94,8 +94,9 @@ export default {
                 username: edited.name,
                 email: edited.mail,
                 permissions: edited.perms,
-                badges: [...edited.badges]
+                badges: edited.badges
             })));
+            console.log(user)
             this.loading = true;
             axios({
                 url: API_URL + `/admin/edit/${this.user.ID}`,
