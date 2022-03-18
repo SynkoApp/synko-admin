@@ -23,11 +23,11 @@
       <v-data-table :headers="headers" :search="search" :items="users" :item-class="setClass" dense>
         {{/* eslint-disable-next-line */}}
         <template v-slot:item.actions="{ item }">
-          <v-btn color="primary" small icon @click="editUserModal=true;currentUser=item;currentUser.key=Math.floor(Math.random()*Date.now())">
-            <v-icon small>mdi-pencil</v-icon>
+          <v-btn color="error" small icon @click="disconnectUser(item)">
+            <v-icon small>mdi-connection</v-icon>
           </v-btn>
-          <v-btn color="error" small icon @click="deleteUser(item)">
-            <v-icon small>mdi-delete</v-icon>
+          <v-btn color="error" small icon @click="closeSynkoForUser(item)">
+            <v-icon small>mdi-close</v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -117,6 +117,18 @@ export default {
       let req = (await axios({
         method: "delete",
         url : `${API_URL}/admin/users/${user.ID}`,
+        headers : {
+          Authorization : localStorage.getItem('token')
+        }
+      })).status
+      if(req == 202) {
+        this.getUsers();
+      }
+    },
+    async disconnectUser(user) {
+      let req = (await axios({
+        method: "post",
+        url : `${API_URL}/admin/disconnectUser/${user.id}`,
         headers : {
           Authorization : localStorage.getItem('token')
         }
