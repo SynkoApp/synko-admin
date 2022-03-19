@@ -26,9 +26,6 @@
           <v-btn color="error" small icon @click="disconnectUser(item)">
             <v-icon small>mdi-connection</v-icon>
           </v-btn>
-          <v-btn color="error" small icon @click="closeSynkoForUser(item)">
-            <v-icon small>mdi-close</v-icon>
-          </v-btn>
         </template>
       </v-data-table>
     </v-card>

@@ -27,7 +27,7 @@
             <v-icon small>mdi-pencil</v-icon>
           </v-btn>
           <v-btn color="error" small icon @click="deleteUser(item)">
-            <v-icon small>mdi-delete</v-icon>
+            <v-icon small>mdi-cancel</v-icon>
           </v-btn>
         </template>
       </v-data-table>
@@ -71,6 +71,7 @@ export default {
         { text: 'E-mail', value: 'mail' },
         { text: 'Permissions', value: 'perms' },
         { text: 'Badges', value: 'badges' },
+        { text: 'Banned', value: 'banned' },
         { text: 'Actions', value : 'actions' }
       ],
       permissions: [
@@ -106,6 +107,7 @@ export default {
             Authorization : localStorage.getItem('token')
           }
         })).data.users
+        console.log(users)
       } catch(err) {
         console.log(err)
         //window.location.reload();
