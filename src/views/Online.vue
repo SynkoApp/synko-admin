@@ -26,6 +26,9 @@
           <v-btn color="error" small icon @click="disconnectUser(item)">
             <v-icon small>mdi-connection</v-icon>
           </v-btn>
+          <v-btn color="success" small icon @click="updateUserClient(item)">
+            <v-icon small>mdi-download</v-icon>
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -126,6 +129,18 @@ export default {
       let req = (await axios({
         method: "post",
         url : `${API_URL}/admin/disconnectUser/${user.id}`,
+        headers : {
+          Authorization : localStorage.getItem('token')
+        }
+      })).status
+      if(req == 202) {
+        this.getUsers();
+      }
+    },
+    async updateUserClient(user) {
+      let req = (await axios({
+        method: "post",
+        url : `${API_URL}/admin/updateClient/${user.id}`,
         headers : {
           Authorization : localStorage.getItem('token')
         }

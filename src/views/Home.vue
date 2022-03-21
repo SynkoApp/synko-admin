@@ -26,7 +26,7 @@
           <v-btn color="primary" small icon @click="editUserModal=true;currentUser=item;currentUser.key=Math.floor(Math.random()*Date.now())">
             <v-icon small>mdi-pencil</v-icon>
           </v-btn>
-          <v-btn color="error" small icon @click="deleteUser(item)">
+          <v-btn :color="item.banned == 'Yes' ? 'success' : 'error'" small icon @click="item.banned == 'Yes' ? unbanUser(item) : banUser(item)">
             <v-icon small>mdi-cancel</v-icon>
           </v-btn>
         </template>
@@ -114,9 +114,21 @@ export default {
       }
       this.users = users
     },
-    async deleteUser(user) {
+    async banUser(user) {
       let req = (await axios({
         method: "delete",
+        url : `${API_URL}/admin/users/${user.ID}`,
+        headers : {
+          Authorization : localStorage.getItem('token')
+        }
+      })).status
+      if(req == 202) {
+        this.getUsers();
+      }
+    },
+    async unbanUser(user) {
+      let req = (await axios({
+        method: "patch",
         url : `${API_URL}/admin/users/${user.ID}`,
         headers : {
           Authorization : localStorage.getItem('token')
