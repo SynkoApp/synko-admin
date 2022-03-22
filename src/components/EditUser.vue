@@ -75,6 +75,10 @@ export default {
                 {
                     name: "Big Bug Hunter",
                     value: "bigbughunter"
+                },
+                {
+                    name: "Tester",
+                    value: "tester"
                 }
             ],
             loading: false

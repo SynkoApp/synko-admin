@@ -22,6 +22,10 @@
       </v-card-title>
       <v-data-table :headers="headers" :search="search" :items="users" :item-class="setClass" dense>
         {{/* eslint-disable-next-line */}}
+        <template v-slot:item.date="{ item }">
+          <span>{{ new Date(item.date).toLocaleString() }}</span>
+        </template>
+        {{/* eslint-disable-next-line */}}
         <template v-slot:item.actions="{ item }">
           <v-btn color="error" small icon @click="disconnectUser(item)">
             <v-icon small>mdi-connection</v-icon>
@@ -66,11 +70,10 @@ export default {
           value: 'username',
         },
         { text: 'ID', value: 'id' },
-        { text: 'Profile pic', value: 'profilePic' },
-        { text: 'Groups', value: 'groups' },
         { text: 'E-mail', value: 'email' },
         { text: 'Permissions', value: 'permissions' },
-        { text: 'Badges', value: 'badges' },
+        { text: 'Date de connexion', value: 'date' },
+        { text: 'Version', value: 'version' },
         { text: 'Actions', value : 'actions' }
       ],
       permissions: [
