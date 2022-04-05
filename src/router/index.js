@@ -7,7 +7,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Links from "../views/Links.vue";
 import Online from "../views/Online.vue";
-
+import Versions from "../views/Versions.vue";
 
 
 Vue.use(VueRouter);
@@ -33,6 +33,14 @@ const routes = [
     path: "/online",
     name: "Online users",
     component: Online,
+    meta: {
+      middleware: Auth
+    }
+  },
+  {
+    path: "/versions",
+    name: "Versions",
+    component: Versions,
     meta: {
       middleware: Auth
     }

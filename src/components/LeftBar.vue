@@ -30,6 +30,12 @@
                 </v-list-item-icon>
                 <v-list-item-title>Online users</v-list-item-title>
             </v-list-item>
+            <v-list-item link to="/versions">
+                <v-list-item-icon>
+                    <v-icon>mdi-folder-sync</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>Manage Versions</v-list-item-title>
+            </v-list-item>
         </v-list>
         <template v-slot:append>
             <v-list nav dense>
