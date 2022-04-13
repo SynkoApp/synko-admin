@@ -19,14 +19,11 @@
       </v-card-title>
       <v-data-table :headers="headers" :search="search" :items="routes" :item-class="setClass" dense>
         {{/* eslint-disable-next-line */}}
-        <!--template v-slot:item.actions="{ item }">
-          <v-btn color="primary" small icon @click="editUserModal=true;currentUser=item;currentUser.key=Math.floor(Math.random()*Date.now())">
-            <v-icon small>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn :color="item.banned == 'Yes' ? 'success' : 'error'" small icon @click="item.banned == 'Yes' ? unbanUser(item) : banUser(item)">
+        <template v-slot:item.actions="{ item }">
+          <v-btn :color="item.state ? 'success' : 'error'" small icon @click="item.state ? enableEndpoint(item) : disableEndpoint(item)">
             <v-icon small>mdi-cancel</v-icon>
           </v-btn>
-        </template-->
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -61,7 +58,7 @@ export default {
         { text: "Method", value: "method" },
         { text: 'Usage', value: 'usage' },
         { text: 'Admin needed ?', value: 'admin' },
-        //{ text: 'Actions', value : 'actions' }
+        { text: 'Actions', value : 'actions' }
       ],
       routes: []
     }
@@ -74,7 +71,6 @@ export default {
       return 'antiscroll table-item'
     },
     async getRoutes() {
-      console.log('ok')
       let routes;
       try {
         routes = (await axios({
@@ -84,13 +80,42 @@ export default {
             Authorization : localStorage.getItem('token')
           }
         })).data.routes
-        console.log(routes)
+        routes.forEach(element => {
+          console.log(element.state)
+        });
       } catch(err) {
         console.log(err)
         //window.location.reload();
       }
       this.routes = routes
     },
+    disableEndpoint(api){
+      console.log('ok')
+      axios({
+        method: "put",
+        url: API_URL+"/admin/apis",
+        headers : {
+          Authorization : localStorage.getItem('token')
+        },
+        data: {
+          route: api.route,
+          method: api.method
+        }
+      })
+    },
+    enableEndpoint(api){
+      axios({
+        method: "patch",
+        url: API_URL+"/admin/apis",
+        headers : {
+          Authorization : localStorage.getItem('token')
+        },
+        data: {
+          route: api.route,
+          method: api.method
+        }
+      })
+    }
   },
   components: { LeftBar },
 }
