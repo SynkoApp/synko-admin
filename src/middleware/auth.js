@@ -7,7 +7,7 @@ export default function auth({ next, router }) {
     } else {
         axios({
             method: "post",
-            url: API_URL+"/admin/checkToken",
+            url: API_URL+"/admin/auth/check",
             headers: {
               Authorization: localStorage.getItem('token')
             }

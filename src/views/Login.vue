@@ -57,7 +57,7 @@ export default {
       this.loading = true;
       axios({
         method : "post",
-        url : API_URL+"/admin/login",
+        url : API_URL+"/admin/auth/login",
         data : {
           username : this.name,
           password : this.password

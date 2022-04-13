@@ -8,6 +8,7 @@ import Login from "../views/Login.vue";
 import Links from "../views/Links.vue";
 import Online from "../views/Online.vue";
 import Versions from "../views/Versions.vue";
+import Apis from "../views/Apis.vue"
 
 
 Vue.use(VueRouter);
@@ -41,6 +42,14 @@ const routes = [
     path: "/versions",
     name: "Versions",
     component: Versions,
+    meta: {
+      middleware: Auth
+    }
+  },
+  {
+    path: "/apis",
+    name: "APIS",
+    component: Apis,
     meta: {
       middleware: Auth
     }
