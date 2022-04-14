@@ -5,7 +5,7 @@
             <v-card-title>
                 <v-row>
                     <v-col cols="12">
-                        <h1>Online users</h1>
+                        <h1>Manage versions</h1>
                     </v-col>
                     <v-col cols="10">
                         <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
@@ -14,13 +14,13 @@
                         <v-btn @click.prevent="getVersions">
                             <v-icon>mdi-refresh</v-icon>
                         </v-btn>
-                        <v-btn @click.prevent="true" color="success">
+                        <v-btn @click.prevent="newReleaseModal = true" color="success">
                             <v-icon>mdi-plus</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
             </v-card-title>
-            <v-data-table :headers="headers" :search="search" :items="versions" :item-class="setClass" dense>
+            <v-data-table :headers="headers" :search="search" :items="versions" :item-class="setClass" dense :items-per-page="-1">
                 {{/* eslint-disable-next-line */}}
                 <template v-slot:item.version="{ item }">
                     {{ item.version }}
@@ -43,6 +43,7 @@
                 </template>
             </v-data-table>
         </v-card>
+        <new-release :open="newReleaseModal" v-on:close="newReleaseModal=false"/>
     </div>
 </template>
 
@@ -58,103 +59,108 @@
 </style>
 
 <script>
-    import axios from 'axios'
-    import LeftBar from '../components/LeftBar.vue';
-    import {
-        API_URL
-    } from '../config';
+import axios from 'axios'
+import LeftBar from '../components/LeftBar.vue';
+import NewRelease from '../components/NewRelease.vue';
+import {
+    API_URL
+} from '../config';
 
-    export default {
-        data() {
-            return {
-                search: '',
-                headers: [{
-                        text: 'Version',
-                        align: 'start',
-                        value: 'version',
-                    },
-                    {
-                        text: 'Date de publication',
-                        value: 'date'
-                    },
-                    {
-                        text: 'Poids',
-                        value: 'size'
-                    },
-                    {
-                        text: 'Hash',
-                        value: 'hash'
-                    },
-                    {
-                        text: 'Action',
-                        value: 'action'
-                    }
-                ],
-                versions: [],
-                latest: {}
-            }
-        },
-        async created() {
-            this.getVersions();
-        },
-        methods: {
-            setClass: () => {
-                return 'antiscroll table-item'
-            },
-            async getVersions() {
-                let data;
-                try {
-                    data = (await axios({
-                        method: 'get',
-                        url: API_URL + '/admin/versions',
-                        headers: {
-                            Authorization: localStorage.getItem('token')
-                        }
-                    })).data
-                } catch (err) {
-                    console.log(err)
-                    //window.location.reload();
+export default {
+    data() {
+        return {
+            search: '',
+            headers: [{
+                    text: 'Version',
+                    align: 'start',
+                    value: 'version',
+                },
+                {
+                    text: 'Date de publication',
+                    value: 'date'
+                },
+                {
+                    text: 'Poids',
+                    value: 'size'
+                },
+                {
+                    text: 'Hash',
+                    value: 'hash'
+                },
+                {
+                    text: 'Action',
+                    value: 'action'
                 }
-                this.latest = data.latest;
-                this.versions = data.versions.reverse();
-            },
-            async getHash(version) {
-                let req = (await axios({
-                    method: "get",
-                    url: `${API_URL}/admin/hash/${version.version}`,
+            ],
+            versions: [],
+            latest: {},
+            newReleaseModal: false
+        }
+    },
+    async created() {
+        this.getVersions();
+    },
+    methods: {
+        setClass: () => {
+            return 'antiscroll table-item'
+        },
+        async getVersions() {
+            let data;
+            try {
+                data = (await axios({
+                    method: 'get',
+                    url: API_URL + '/admin/versions',
                     headers: {
                         Authorization: localStorage.getItem('token')
                     }
                 })).data
-                this.versions[this.versions.indexOf(version)]['hash'] = req.hash;
-            },
-            async deleteVersion(version) {
-                let req = (await axios({
-                    method: "post",
-                    url: `${API_URL}/admin/disconnectUser/${version}`,
-                    headers: {
-                        Authorization: localStorage.getItem('token')
-                    }
-                })).status
-                if (req == 202) {
-                    this.getUsers();
-                }
-            },
-            async updateUserClient(user) {
-                let req = (await axios({
-                    method: "post",
-                    url: `${API_URL}/admin/updateClient/${user.id}`,
-                    headers: {
-                        Authorization: localStorage.getItem('token')
-                    }
-                })).status
-                if (req == 202) {
-                    this.getUsers();
-                }
-            },
+            } catch (err) {
+                console.log(err)
+                //window.location.reload();
+            }
+            this.latest = data.latest;
+            this.versions = data.versions.reverse();
         },
-        components: {
-            LeftBar,
+        async getHash(version) {
+            let req = (await axios({
+                method: "get",
+                url: `${API_URL}/admin/hash/${version.version}`,
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            })).data
+            this.versions[this.versions.indexOf(version)]['hash'] = req.hash;
         },
-    }
+        async deleteVersion(version) {
+            let req = (await axios({
+                method: "delete",
+                url: `${API_URL}/admin/versions/${version}`,
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            })).status
+            if (req == 202) {
+                this.$nextTick(() => {
+                    this.getVersions();
+                })
+            }
+        },
+        async updateUserClient(user) {
+            let req = (await axios({
+                method: "post",
+                url: `${API_URL}/admin/updateClient/${user.id}`,
+                headers: {
+                    Authorization: localStorage.getItem('token')
+                }
+            })).status
+            if (req == 202) {
+                this.getUsers();
+            }
+        },
+    },
+    components: {
+        LeftBar,
+        NewRelease
+    },
+}
 </script>
